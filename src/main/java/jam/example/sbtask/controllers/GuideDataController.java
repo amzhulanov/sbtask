@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * REST-контроллер для работы со структурой справочника
+ * REST-контроллер для работы с данными справочников
  *
  * @author JAM
  */
@@ -39,6 +39,7 @@ public class GuideDataController {
      * @param name Имя таблицы
      * @param json Текст запроса
      * @return Возвращает кол-во добавленых строк
+     * @throws ParseException Исключение возникающее при парсинге json
      */
     @PutMapping("/{name}")
     public ResponseEntity<String> addDataGuideT(@PathVariable String name, @RequestBody String json) throws ParseException {

@@ -99,8 +99,9 @@ public class GuideStructureRepository {
     /**
      * Метод проверяет существование справочника     *
      *
+     * @param sql Текст запроса
      * @return возвращает имя справочника, если он существует в базе
-     * @sql Текст запроса
+     *
      */
     public String checkGuide(String sql) {
         try {

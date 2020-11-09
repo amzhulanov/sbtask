@@ -1,0 +1,6 @@
+jam.example.sbtask
+jam.example.sbtask.configs
+jam.example.sbtask.controllers
+jam.example.sbtask.repositories
+jam.example.sbtask.services
+jam.example.sbtask.utils

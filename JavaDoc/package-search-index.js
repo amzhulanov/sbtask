@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"jam.example.sbtask"},{"l":"jam.example.sbtask.configs"},{"l":"jam.example.sbtask.controllers"},{"l":"jam.example.sbtask.repositories"},{"l":"jam.example.sbtask.services"},{"l":"jam.example.sbtask.utils"}]

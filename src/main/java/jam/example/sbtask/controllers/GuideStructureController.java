@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * REST-контроллер для работы со структурой справочника
+ * REST-контроллер для работы со структурой справочников
  *
  * @author JAM
  */
@@ -84,6 +84,7 @@ public class GuideStructureController {
      *
      * @param name Имя справочника
      * @param json Текст запроса
+     * @return Возвращает статус удаления полей справочника
      */
     @DeleteMapping("/{name}/fields")
     public ResponseEntity<String> deleteFieldsGuide(@PathVariable String name, @RequestBody String json) {
@@ -102,6 +103,7 @@ public class GuideStructureController {
      * Метод для удаления справочника
      *
      * @param name Имя справочника
+     * @return Возвращает статус удаления справочника
      */
     @DeleteMapping("/{name}")
     public ResponseEntity<String>  dropGuide(@PathVariable String name) {

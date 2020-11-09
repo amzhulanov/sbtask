@@ -1,0 +1,12 @@
+FROM postgres:10
+COPY create_database_sberbank.sql /docker-entrypoint-initdb.d/
+
+
+create_database_sberbank.sql
+
+CREATE DATABASE sberbank;
+CREATE USER sb WITH PASSWORD 'sb';
+GRANT ALL PRIVILEGES ON DATABASE sberbank TO sb;
+\c sberbank
+CREATE SCHEMA public AUTHORIZATION sb;
+SET search_path TO public;
