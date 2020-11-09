@@ -14,6 +14,8 @@ import java.util.List;
  * @author JAM
  */
 
+
+//todo Добавить обработку ошибок выполнений SQL-запросов
 @Repository
 @Slf4j
 public class GuideStructureRepository {
@@ -75,7 +77,7 @@ public class GuideStructureRepository {
      *
      * @param sql Текст запроса
      */
-    public void deleteGuide(String sql) {
+    public void dropGuide(String sql) {
         executeJdbc(sql);
     }
 
@@ -104,7 +106,7 @@ public class GuideStructureRepository {
         try {
             return jdbcTemplate.queryForObject(sql, String.class);
         } catch (EmptyResultDataAccessException e) {
-            return String.valueOf(e);
+            return "";
         }
     }
 

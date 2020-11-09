@@ -115,7 +115,7 @@ public class PrepareSQL extends ConstantSQL {
         List<String> sqlList = new ArrayList<>();
         fields.forEach((name, type) -> {
             prepareSQL(nameTable, ALTER_TABLE);
-            sql.append(UPDATE_NAME_FIELDS).append(name).append(TO).append(type);
+            sql.append(UPDATE_NAME_FIELDS).append(name).append(SPACE).append(TO).append(type);
             sqlList.add(String.valueOf(sql));
             log.info("updateNameFields. "+sql);
         });
@@ -147,7 +147,7 @@ public class PrepareSQL extends ConstantSQL {
      */
     public String addFields(Map<String, String> fieldsNew, String nameTable) {
         prepareSQL(nameTable, ALTER_TABLE);
-        fieldsNew.forEach((name, type) -> sql.append(ADD_COLUMN).append(name).append(type).append(COMMA));
+        fieldsNew.forEach((name, type) -> sql.append(ADD_COLUMN).append(name).append(SPACE).append(type).append(COMMA));
         replaceSQL(1,SEMICOLON);
         log.info("addFields."+sql);
         return String.valueOf(sql);

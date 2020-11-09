@@ -17,6 +17,8 @@ import java.util.Map;
  *
  * @author JAM
  */
+
+//todo Добавить проверку типа полей и данных
 @Service
 @Slf4j
 public class GuideServiceImpl implements GuideService {
@@ -39,7 +41,7 @@ public class GuideServiceImpl implements GuideService {
      * @return возвращает TRUE если справочника нет в базе, FALSE если справочник существует
      */
     public Boolean checkGuide(String name) {
-        return guideStructureRepository.checkGuide(prepareSQL.checkGuide(name)).isEmpty();
+        return guideStructureRepository.checkGuide(prepareSQL.checkGuide(name)).isBlank();
     }
 
     /**
@@ -108,8 +110,8 @@ public class GuideServiceImpl implements GuideService {
      *
      * @param name Имя справочника
      */
-    public void deleteGuide(String name) {
-        guideStructureRepository.deleteGuide(prepareSQL.deleteGuide(name));
+    public void dropGuide(String name) {
+        guideStructureRepository.dropGuide(prepareSQL.deleteGuide(name));
     }
 
     /**
@@ -118,9 +120,12 @@ public class GuideServiceImpl implements GuideService {
      * @param fieldsGuide Список полей и значений
      * @param nameTable   Имя таблицы
      */
-    public void addRecords(Map<String, String> fieldsGuide, String nameTable) {
-        List<List<String>> list = splitMap(fieldsGuide);
-        guideDataRepository.addRecord(prepareSQL.addRecords(list.get(0), list.get(1), nameTable));
+    public void addRecords(List<Map<String, String>> fieldsGuide, String nameTable) {
+        fieldsGuide.forEach((n)->{List<List<String>> list=splitMap(n);
+                                    guideDataRepository.addRecord(prepareSQL.addRecords(list.get(0), list.get(1), nameTable));
+                                    });
+//        List<List<String>> list = splitMap(fieldsGuide);
+//        guideDataRepository.addRecord(prepareSQL.addRecords(list.get(0), list.get(1), nameTable));
     }
 
     /**

@@ -1,13 +1,11 @@
 package jam.example.sbtask.repositories;
 
 import lombok.extern.slf4j.Slf4j;
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +14,8 @@ import java.util.Map;
  *
  * @author JAM
  */
+
+//todo Добавить обработку ошибок выполнений SQL-запросов
 @Repository
 @Slf4j
 public class GuideDataRepository {

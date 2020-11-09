@@ -1,5 +1,6 @@
 package jam.example.sbtask.repositories;
 
+import jam.example.sbtask.config.ConstantSQLTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,11 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,59 +26,25 @@ import java.util.Map;
 @Slf4j
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-class GuideStructureRepositoryTest {
+class GuideStructureRepositoryTest extends ConstantSQLTest {
 
     private final Map<String,String> guideFields =new HashMap<>();
-    private String nameTable;
 
-
-    private JdbcTemplate jdbcTemplate;
-
-    private GuideStructureRepository guideStructureRepository;
-
-
-    @Value("${guide.structure.CHECK_GUIDE}")
-    private String CHECK_GUIDE;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    GuideStructureRepositoryTest(JdbcTemplate jdbcTemplate, GuideStructureRepository guideStructureRepository) {
+    GuideStructureRepositoryTest(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        //  this.jdbcTemplate = jdbcTemplate;
-        this.guideStructureRepository = guideStructureRepository;
     }
+
     @BeforeEach
     void initialParam (){
-        guideFields.put("name","varchar");
-        guideFields.put("lastname","varchar");
-        nameTable="guide";
+
     }
     @AfterEach
     void deleteParam(){
-        jdbcTemplate.execute("DROP TABLE "+nameTable);
+        jdbcTemplate.execute(dropTable);
     }
 
-    @Test
-    void createGuideTest() {
-      // guideStructureRepository.createGuide(guideFields,nameTable);
-       //assertThat(jdbcTemplate.queryForObject(String.valueOf(CHECK_GUIDE + nameTable + "';"), String.class)).isEqualTo(nameTable);
-
-    }
-
-//    @Test
-//    void editTypeFields() {
-//    }
-//
-//    @Test
-//    void editNameFields() {
-//    }
-//
-//    @Test
-//    void checkGuide() {
-//    }
+    //todo добавить тесты для репозитория
 }
-
-
-//        Mockito.when(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM EMPLOYEE", Integer.class))
-//                .thenReturn(4);
-//        Mockito.when(jdbcTemplate.queryForObject(String.valueOf(CHECK_GUIDE + nameTable + "';"), String.class))
-//                .thenReturn(nameTable);

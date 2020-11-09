@@ -80,25 +80,36 @@ public class GuideStructureController {
     }
 
     /**
-     * Метод для удаления справочника или полей из справочника
+     * Метод для полей из справочника
      *
      * @param name Имя справочника
-     * @param json Текст запроса (опционально)
+     * @param json Текст запроса
      */
-    @DeleteMapping("/{name}")
-    public void deleteGuide(@PathVariable String name, @RequestBody String json) {
-        if (name != null) {
-            if (json != null) {
-                List<String> columnList = converter.convertJsonToList(json);
-                if (!columnList.isEmpty()) {
-                    guideService.deleteFieldsGuide(columnList, name);
-                }
-            } else {
-                guideService.deleteGuide(name);
+    @DeleteMapping("/{name}/fields")
+    public ResponseEntity<String> deleteFieldsGuide(@PathVariable String name, @RequestBody String json) {
+        if (name != null && json != null) {
+            List<String> columnList = converter.convertJsonToList(json);
+            if (!columnList.isEmpty()) {
+                guideService.deleteFieldsGuide(columnList, name);
+                return new ResponseEntity<>(HttpStatus.OK);
             }
         }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     }
 
+    /**
+     * Метод для удаления справочника
+     *
+     * @param name Имя справочника
+     */
+    @DeleteMapping("/{name}")
+    public ResponseEntity<String>  dropGuide(@PathVariable String name) {
+        if (name != null) {
+            guideService.dropGuide(name);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
 }

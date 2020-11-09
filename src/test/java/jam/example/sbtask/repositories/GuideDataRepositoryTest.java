@@ -1,5 +1,6 @@
 package jam.example.sbtask.repositories;
 
+import jam.example.sbtask.config.ConstantSQLTest;
 import jam.example.sbtask.utils.PrepareSQL;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -22,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-class GuideDataRepositoryTest {
+class GuideDataRepositoryTest extends ConstantSQLTest {
     private final List<String> fieldList = new ArrayList<>();
     private final List<String> dataList = new ArrayList<>();
     private final Map<String,String> fieldData=new HashMap<>();
@@ -44,13 +45,13 @@ class GuideDataRepositoryTest {
     }
 
     @BeforeEach
-    void initialParametrs() {
-        jdbcTemplate.execute("DROP TABLE IF EXISTS person;");
-        jdbcTemplate.execute("CREATE TABLE person (firstName varchar,secondName integer);");
-        jdbcTemplate.execute("INSERT INTO person (firstName,secondname) VALUES('nike','4')");
+    void setUp()  {
+        jdbcTemplate.execute(dropTable);
+        jdbcTemplate.execute(createTable);
+        jdbcTemplate.execute(insertFirstRecord);
         nameTable = "person";
         fieldList.add("firstName");
-        fieldList.add("secondName");
+        fieldList.add("lastname");
         dataList.add("mike");
         dataList.add("2");
         for (int i=0;i<fieldList.size();i++){
@@ -61,7 +62,7 @@ class GuideDataRepositoryTest {
     }
     @AfterEach
     void closeParam(){
-        jdbcTemplate.execute("DROP TABLE IF EXISTS person;");
+        jdbcTemplate.execute(dropTable);
     }
 
     @Test

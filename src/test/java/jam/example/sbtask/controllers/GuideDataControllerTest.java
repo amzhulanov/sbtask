@@ -2,7 +2,6 @@ package jam.example.sbtask.controllers;
 
 import jam.example.sbtask.config.ConstantSQLTest;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,13 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -56,7 +53,7 @@ class GuideDataControllerTest extends ConstantSQLTest {
     void addDataGuide() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                 .put("/data/person")
-                .contentType(MediaType.APPLICATION_JSON).content(json_add))
+                .contentType(MediaType.APPLICATION_JSON).content(json_addData))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -65,7 +62,7 @@ class GuideDataControllerTest extends ConstantSQLTest {
     void updateDataGuide() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                 .post("/data/person")
-                .contentType(MediaType.APPLICATION_JSON).content(json_update))
+                .contentType(MediaType.APPLICATION_JSON).content(json_updateData))
                 .andDo(print())
                 .andExpect(status().isOk());
 

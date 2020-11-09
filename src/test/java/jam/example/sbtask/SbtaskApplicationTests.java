@@ -13,13 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @EnableConfigurationProperties
 class SbtaskApplicationTests {
 
-	@Autowired
-	private ApplicationContext applicationContext;
+    @Autowired
+    private ApplicationContext applicationContext;
 
-	@Test
-	void contextLoads() {
-		assertTrue(applicationContext!=null);
-	}
+    @Test
+    void contextLoads() {
+        assertTrue(applicationContext != null);
+    }
 
 
 }

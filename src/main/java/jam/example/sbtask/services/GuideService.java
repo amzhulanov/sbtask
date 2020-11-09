@@ -20,9 +20,9 @@ public interface GuideService {
 
     void deleteFieldsGuide(List<String> columnsGuide, String name);
 
-    void deleteGuide(String name);
+    void dropGuide(String name);
 
-    void addRecords(Map<String, String> fieldsGuide, String name);
+    void addRecords(List<Map<String, String>> fieldsGuide, String name);
 
     Integer deleteRecords(Map<String, String> fieldsGuide, String name);
 

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,17 +24,14 @@ import java.util.Map;
 public class GuideDataController {
     private Map<String, String> fieldsGuide;
 
-    @Autowired
-    private Converter converter;
+    private final Converter converter;
+    private final GuideService guideService;
 
     @Autowired
-    private GuideService guideService;
-
-//    public GuideDataController(Converter converter, GuideService guideService) {
-//        this.converter = converter;
-//        this.guideService = guideService;
-//    }
-
+    public GuideDataController(Converter converter, GuideService guideService) {
+        this.converter = converter;
+        this.guideService = guideService;
+    }
 
     /**
      * Метод для добавления значений в справочник
@@ -43,9 +41,9 @@ public class GuideDataController {
      * @return Возвращает кол-во добавленых строк
      */
     @PutMapping("/{name}")
-    public ResponseEntity<String> addDataGuide(@PathVariable String name, @RequestBody String json) {
-        fieldsGuide = converter.convertJsonToMap(json);
-        guideService.addRecords(fieldsGuide, name);
+    public ResponseEntity<String> addDataGuideT(@PathVariable String name, @RequestBody String json) throws ParseException {
+        List<Map<String, String>> fieldsSearch  = converter.convertJsonToListMap(json);
+        guideService.addRecords(fieldsSearch, name);
         return new ResponseEntity<>("Data added", HttpStatus.OK);
     }
 
@@ -59,7 +57,7 @@ public class GuideDataController {
      */
     @PostMapping("/{name}")
     public ResponseEntity<String> updateDataGuide(@PathVariable String name, @RequestBody String json) throws ParseException {
-        Integer result = guideService.updateRecords(converter.convertJson(json), name);
+        Integer result = guideService.updateRecords(converter.convertJsonToListMap(json), name);
         return new ResponseEntity<>("Update " + result + " records", HttpStatus.OK);
     }
 
