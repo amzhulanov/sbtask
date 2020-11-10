@@ -96,13 +96,13 @@ public class GuideServiceImpl implements GuideService {
     }
 
     /**
-     * Реализация метода удаления полей из справочника
+     * Реализация метода удаления поля из справочника
      *
-     * @param columnsGuide Список полей
+     * @param columnGuide  поле
      * @param name         Имя таблицы
      */
-    public void deleteFieldsGuide(List<String> columnsGuide, String name) {
-        guideStructureRepository.deleteFields(prepareSQL.deleteFields(columnsGuide, name));
+    public void deleteFieldGuide(String columnGuide, String name) {
+        guideStructureRepository.deleteFields(prepareSQL.deleteFields(columnGuide, name));
     }
 
     /**
@@ -121,11 +121,9 @@ public class GuideServiceImpl implements GuideService {
      * @param nameTable   Имя таблицы
      */
     public void addRecords(List<Map<String, String>> fieldsGuide, String nameTable) {
-        fieldsGuide.forEach((n)->{List<List<String>> list=splitMap(n);
+        fieldsGuide.forEach(n->{List<List<String>> list=splitMap(n);
                                     guideDataRepository.addRecord(prepareSQL.addRecords(list.get(0), list.get(1), nameTable));
                                     });
-//        List<List<String>> list = splitMap(fieldsGuide);
-//        guideDataRepository.addRecord(prepareSQL.addRecords(list.get(0), list.get(1), nameTable));
     }
 
     /**
@@ -154,10 +152,15 @@ public class GuideServiceImpl implements GuideService {
         }
     }
 
+    /**
+     * Реализация метода для удаления записей из справочника
+     * @param fieldsGuide Набор полей со значениями
+     * @param nameTable имя справочника
+     * @return кол-во удалённых записей
+     */
     public Integer deleteRecords(Map<String, String> fieldsGuide, String nameTable) {
         return guideDataRepository.deleteRecords(prepareSQL.deleteRecords(fieldsGuide, nameTable));
     }
-
 
     /**
      * Реализация метода для разделения Map <Поле, Значение> на два списка <Поле>, <Значение>

@@ -38,7 +38,7 @@ public class GuideStructureController {
      * @return Возвращает статус выполнения
      */
     @PutMapping("/{name}/create")
-    public ResponseEntity<String> addGuide(@PathVariable String name, @RequestBody String json) {
+    public ResponseEntity<String> createGuide(@PathVariable String name, @RequestBody String json) {
         fieldsGuide = converter.convertJsonToMap(json);
         if (name != null && guideService.createGuide(fieldsGuide, name)) {
             return new ResponseEntity<>("The guide created", HttpStatus.OK);
@@ -83,20 +83,15 @@ public class GuideStructureController {
      * Метод для полей из справочника
      *
      * @param name Имя справочника
-     * @param json Текст запроса
      * @return Возвращает статус удаления полей справочника
      */
-    @DeleteMapping("/{name}/fields")
-    public ResponseEntity<String> deleteFieldsGuide(@PathVariable String name, @RequestBody String json) {
-        if (name != null && json != null) {
-            List<String> columnList = converter.convertJsonToList(json);
-            if (!columnList.isEmpty()) {
-                guideService.deleteFieldsGuide(columnList, name);
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
+    @DeleteMapping("/{name}/{field}")
+    public ResponseEntity<String> deleteFieldGuide(@PathVariable String name, @PathVariable String field) {
+        if (name != null && field != null) {
+            guideService.deleteFieldGuide(field, name);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
     }
 
     /**
@@ -106,7 +101,7 @@ public class GuideStructureController {
      * @return Возвращает статус удаления справочника
      */
     @DeleteMapping("/{name}")
-    public ResponseEntity<String>  dropGuide(@PathVariable String name) {
+    public ResponseEntity<String> dropGuide(@PathVariable String name) {
         if (name != null) {
             guideService.dropGuide(name);
             return new ResponseEntity<>(HttpStatus.OK);

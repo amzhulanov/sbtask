@@ -9,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -23,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @Slf4j
-@PropertySource("classpath:test.properties")
 class GuideDataControllerTest extends ConstantSQLTest {
 
     @Autowired
@@ -50,16 +48,16 @@ class GuideDataControllerTest extends ConstantSQLTest {
     }
 
     @Test
-    void addDataGuide() throws Exception {
+    void addDataGuideTest() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                 .put("/data/person")
-                .contentType(MediaType.APPLICATION_JSON).content(json_addData))
+                .contentType(MediaType.APPLICATION_JSON).content(json_addData2))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    void updateDataGuide() throws Exception {
+    void updateDataGuideTest() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                 .post("/data/person")
                 .contentType(MediaType.APPLICATION_JSON).content(json_updateData))
@@ -69,7 +67,7 @@ class GuideDataControllerTest extends ConstantSQLTest {
     }
 
     @Test
-    void find() throws Exception {
+    void findTest() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                 .get("/data/person")
                 .contentType(MediaType.APPLICATION_JSON).content("{}"))
@@ -87,7 +85,7 @@ class GuideDataControllerTest extends ConstantSQLTest {
     void deleteGuide() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                 .delete("/data/person")
-                .contentType(MediaType.APPLICATION_JSON).content(json_delete))
+                .contentType(MediaType.APPLICATION_JSON).content(lc_json_delete))
                 .andDo(print())
                 .andExpect(status().isOk());
 

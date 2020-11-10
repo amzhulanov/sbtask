@@ -3,14 +3,12 @@ package jam.example.sbtask;
 import jam.example.sbtask.config.ConstantSQLTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -53,39 +51,39 @@ class LifeCycleTest extends ConstantSQLTest {
     void lifeCycleTest() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                 .put("/db/person/create")
-                .contentType(MediaType.APPLICATION_JSON).content(json_createGuide))
+                .contentType(MediaType.APPLICATION_JSON).content(lc_json_createGuide))
                 .andDo(print())
                 .andExpect(status().isOk());
 
         mvc.perform(MockMvcRequestBuilders
                 .post("/db/person/edit_name_field")
-                .contentType(MediaType.APPLICATION_JSON).content(json_editNameField))
+                .contentType(MediaType.APPLICATION_JSON).content(lc_json_editNameField))
                 .andDo(print())
                 .andExpect(status().isOk());
 
         mvc.perform(MockMvcRequestBuilders
                 .put("/data/person")
-                .contentType(MediaType.APPLICATION_JSON).content(json_addData))
+                .contentType(MediaType.APPLICATION_JSON).content(lc_json_addData))
                 .andDo(print())
                 .andExpect(status().isOk());
         mvc.perform(MockMvcRequestBuilders
                 .get("/data/person")
-                .contentType(MediaType.APPLICATION_JSON).content(json_find))
+                .contentType(MediaType.APPLICATION_JSON).content(lc_json_find))
                 .andDo(print())
                 .andExpect(status().isOk());
         mvc.perform(MockMvcRequestBuilders
                 .post("/data/person")
-                .contentType(MediaType.APPLICATION_JSON).content(json_updateData))
+                .contentType(MediaType.APPLICATION_JSON).content(lc_json_updateData))
                 .andDo(print())
                 .andExpect(status().isOk());
         mvc.perform(MockMvcRequestBuilders
                 .get("/data/person")
-                .contentType(MediaType.APPLICATION_JSON).content(json_find))
+                .contentType(MediaType.APPLICATION_JSON).content(lc_json_find))
                 .andDo(print())
                 .andExpect(status().isOk());
         mvc.perform(MockMvcRequestBuilders
                 .delete("/data/person")
-                .contentType(MediaType.APPLICATION_JSON).content(json_delete))
+                .contentType(MediaType.APPLICATION_JSON).content(lc_json_delete))
                 .andDo(print())
                 .andExpect(status().isOk());
         mvc.perform(delete("/db/person"))

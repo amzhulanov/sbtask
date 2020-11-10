@@ -1,6 +1,6 @@
 package jam.example.sbtask.repositories;
 
-import jam.example.sbtask.config.ConstantSQLTest;
+import jam.example.sbtask.config.ConstantDataRepositoryTest;
 import jam.example.sbtask.utils.PrepareSQL;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -23,13 +23,15 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-class GuideDataRepositoryTest extends ConstantSQLTest {
+@Slf4j
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+class GuideDataRepositoryTest extends ConstantDataRepositoryTest {
+
     private final List<String> fieldList = new ArrayList<>();
     private final List<String> dataList = new ArrayList<>();
     private final Map<String,String> fieldData=new HashMap<>();
-    private final Map<String,String> fieldGuide=new HashMap<>();
-    private List<Map<String, Object>> result=new ArrayList<>();
-    private String nameTable;
+
     private final StringBuilder sql=new StringBuilder();
 
     private final GuideDataRepository guideDataRepository;
@@ -44,74 +46,54 @@ class GuideDataRepositoryTest extends ConstantSQLTest {
         this.prepareSQL = prepareSQL;
     }
 
-    @BeforeEach
-    void setUp()  {
+    @BeforeAll
+    void initParam(){
         jdbcTemplate.execute(dropTable);
         jdbcTemplate.execute(createTable);
-        jdbcTemplate.execute(insertFirstRecord);
-        nameTable = "person";
-        fieldList.add("firstName");
-        fieldList.add("lastname");
-        dataList.add("mike");
-        dataList.add("2");
-        for (int i=0;i<fieldList.size();i++){
-            fieldData.put(fieldList.get(i),dataList.get(i));
-        }
-        fieldGuide.put("firstName","varchar");
-        fieldGuide.put("secondName","integer");
-    }
-    @AfterEach
-    void closeParam(){
-        jdbcTemplate.execute(dropTable);
+        fieldList.add(FIRST_FIELD);
+        fieldList.add(SECOND_FIELD);
+        dataList.add(FIRST_FIELD_OLD_VALUE);
+        dataList.add(SECOND_FIELD_VALUE);
     }
 
     @Test
+    @Order(1)
     void addRecordTest() {
-        String query=prepareSQL.addRecords(fieldList,dataList,nameTable);
+        String query=prepareSQL.addRecords(fieldList,dataList,NAME_TABLE);
         guideDataRepository.addRecord(query);
-        query=prepareSQL.find(new HashMap<String,String>(),nameTable);
+        query=prepareSQL.find(new HashMap<String,String>(),NAME_TABLE);
         List<Map<String,Object>> result=jdbcTemplate.query(query,new ColumnMapRowMapper());
-        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.size()).isEqualTo(1);
     }
 
     @Test
+    @Order(2)
     void updateByFieldsTest() {
-        jdbcTemplate.execute("INSERT INTO person (firstName,secondname) VALUES('nike','5')");
         Map<String,String> updList = new HashMap<>();
         Map<String,String> searchList = new HashMap<>();
-        updList.put("firstName","john");
-        searchList.put("firstName","nike");
-        searchList.put("secondname","5");
-        String query=prepareSQL.updateData(searchList,updList,nameTable);
+        updList.put(FIRST_FIELD, FIRST_FIELD_NEW_VALUE);
+        searchList.put(SECOND_FIELD, SECOND_FIELD_VALUE);
+        String query=prepareSQL.updateData(searchList,updList,NAME_TABLE);
         Integer count=guideDataRepository.updateByFields(query);
-        assertThat(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM person WHERE firstname='john';",Integer.class)).isGreaterThan(0);
-
+        assertThat(jdbcTemplate.queryForObject(selectCount.concat(FIRST_FIELD).concat("=").concat("'").concat(FIRST_FIELD_NEW_VALUE).concat("'"),Integer.class)).isPositive();
     }
 
     @Test
+    @Order(3)
     void findTest() {
-        addRecords(2);
-        result=guideDataRepository.find(prepareSQL.find(new HashMap<>(),nameTable));
+        List<Map<String, Object>> result = guideDataRepository.find(prepareSQL.find(new HashMap<>(), NAME_TABLE));
         assertThat(result.size()).isPositive();
-        result=guideDataRepository.find(prepareSQL.find(fieldData,nameTable));
+        fieldData.put(FIRST_FIELD,FIRST_FIELD_NEW_VALUE);
+        fieldData.put(SECOND_FIELD,SECOND_FIELD_VALUE);
+        result =guideDataRepository.find(prepareSQL.find(fieldData,NAME_TABLE));
         assertThat(result.size()).isPositive();
-
     }
 
     @Test
+    @Order(4)
     void deleteRecordsTest() {
-        addRecords(2);
-        Integer result=guideDataRepository.deleteRecords(prepareSQL.deleteRecords(new HashMap<>(),nameTable));
+        Integer result=guideDataRepository.deleteRecords(prepareSQL.deleteRecords(new HashMap<>(),NAME_TABLE));
         assertThat(result).isPositive();
-        addRecords(2);
-        assertThat(guideDataRepository.deleteRecords(prepareSQL.deleteRecords(new HashMap<>(),nameTable))).isEqualTo(2);
     }
 
-    private void addRecords(Integer count){
-        String query =prepareSQL.addRecords(fieldList,dataList,nameTable);
-        for (int i = 0; i < count; i++) {
-            guideDataRepository.addRecord(query);
-        }
-
-    }
 }

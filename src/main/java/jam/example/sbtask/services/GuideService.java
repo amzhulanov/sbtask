@@ -18,7 +18,7 @@ public interface GuideService {
 
     void addFieldsGuide(Map<String, String> fieldsGuide, String name);
 
-    void deleteFieldsGuide(List<String> columnsGuide, String name);
+    void deleteFieldGuide(String columnGuide, String name);
 
     void dropGuide(String name);
 

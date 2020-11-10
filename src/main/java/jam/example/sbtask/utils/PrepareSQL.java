@@ -123,17 +123,15 @@ public class PrepareSQL extends ConstantSQL {
     }
 
     /**
-     * Подготовка запроса для удаления столбцов из справочника
+     * Подготовка запроса для удаления поля из справочника
      *
-     * @param columnsGuide Список столбцов
+     * @param columnGuide  поле для удаления
      * @param nameTable    Имя таблицы
      * @return готовый sql-запрос
      */
-    public String deleteFields(List<String> columnsGuide, String nameTable) {
+    public String deleteFields(String columnGuide, String nameTable) {
         prepareSQL(nameTable, ALTER_TABLE);
-        sql.append(SPACE).append(DROP_COLUMN);
-        columnsGuide.forEach(column -> sql.append(DROP_COLUMN).append(column).append(COMMA));
-        replaceSQL(1,SEMICOLON);
+        sql.append(SPACE).append(DROP_COLUMN).append(columnGuide).append(SEMICOLON);
         log.info("deleteFields. "+sql);
         return String.valueOf(sql);
     }
